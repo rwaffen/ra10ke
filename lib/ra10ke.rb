@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake'
 require 'rake/tasklib'
 require 'ra10ke/version'
@@ -9,6 +11,7 @@ require 'ra10ke/duplicates'
 require 'ra10ke/install'
 require 'ra10ke/validate'
 require 'ra10ke/diff'
+require 'ra10ke/update'
 require 'git'
 require 'semverse'
 require 'r10k/puppetfile'
@@ -23,6 +26,7 @@ module Ra10ke
     include Ra10ke::Install
     include Ra10ke::Validate
     include Ra10ke::Diff
+    include Ra10ke::Update
 
     attr_accessor :basedir, :moduledir, :puppetfile_path, :puppetfile_name, :force, :purge
 
@@ -46,6 +50,7 @@ module Ra10ke
         define_task_validate(*args)
         define_task_print_git_conversion(*args)
         define_task_diff(*args)
+        define_task_update(*args)
       end
     end
 
