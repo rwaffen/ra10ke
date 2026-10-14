@@ -1,3 +1,4 @@
+require 'ra10ke/helpers'
 require 'rake'
 require 'rake/tasklib'
 require 'ra10ke/version'

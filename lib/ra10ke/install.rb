@@ -1,3 +1,5 @@
+require 'ra10ke/helpers'
+
 module Ra10ke::Install
   def define_task_install(*_args)
     desc 'Install modules specified in Puppetfile'
@@ -19,9 +21,9 @@ module Ra10ke::Install
                 end
           mod.sync
           if mod.status == :insync
-            puts "Successfully #{msg} #{mod.version}".green
+            puts Ra10ke.green("Successfully #{msg} #{mod.version}")
           else
-            puts "Failed to sync #{mod.name}".red
+            puts Ra10ke.red("Failed to sync #{mod.name}")
           end
         end
       end

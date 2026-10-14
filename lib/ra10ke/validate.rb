@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-require 'ra10ke/monkey_patches'
 require 'table_print'
+require 'ra10ke/helpers'
 require 'ra10ke/puppetfile_parser'
 require 'English'
 require 'ra10ke/git_repo'
 
 module Ra10ke
   module Validate
-    GOOD_EMOJI = ENV['GOOD_EMOJI'] || '👍'
-    BAD_EMOJI = ENV['BAD_EMOJI'] || '😨'
-
     # Validate the git urls and refs
     def define_task_validate(*)
       desc 'Validate the git urls and branches, refs, or tags'
@@ -19,9 +16,9 @@ module Ra10ke
         exit_code = 0
         if gitvalididation.bad_mods?
           exit_code = 1
-          message = BAD_EMOJI + '  Not all modules in the Puppetfile are valid. '.red + BAD_EMOJI
+          message = Ra10ke.red("#{Ra10ke.bad_emoji} Not all modules in the Puppetfile are valid. #{Ra10ke.bad_emoji}")
         else
-          message = GOOD_EMOJI + '  Puppetfile looks good. '.green + GOOD_EMOJI
+          message = Ra10ke.green("#{Ra10ke.good_emoji} Puppetfile looks good. #{Ra10ke.good_emoji}")
         end
         tp gitvalididation.sorted_mods, :name, { url: { width: 50 } }, :ref, :status
         abort(message) if exit_code.positive?
@@ -63,7 +60,7 @@ module Ra10ke
               ref: ref,
               valid_url?: repo.valid_url?,
               valid_ref?: valid_ref,
-              status: valid_ref ? Ra10ke::Validate::GOOD_EMOJI : Ra10ke::Validate::BAD_EMOJI,
+              status: valid_ref ? Ra10ke.good_emoji : Ra10ke.bad_emoji,
             }
           end
         end

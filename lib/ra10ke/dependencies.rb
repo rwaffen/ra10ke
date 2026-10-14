@@ -1,13 +1,11 @@
 require 'semverse'
 require 'r10k/puppetfile'
+require 'ra10ke/helpers'
 require 'puppet_forge'
 require 'table_print'
 require 'git'
 
 module Ra10ke::Dependencies
-  GOOD_EMOJI = ENV['GOOD_EMOJI'] || '👍'
-  BAD_EMOJI = ENV['BAD_EMOJI'] || '😨'
-
   class Verification
     def self.version_formats
       @version_formats ||= {}
@@ -207,9 +205,9 @@ module Ra10ke::Dependencies
       dependencies.print_table(dependencies.outdated)
 
       if dependencies.outdated.any?
-        abort(BAD_EMOJI + '  Not all modules in the Puppetfile are up2date. '.red + BAD_EMOJI)
+        abort(Ra10ke.red("#{Ra10ke.bad_emoji}  Not all modules in the Puppetfile are up2date. #{Ra10ke.bad_emoji}"))
       else
-        puts(GOOD_EMOJI + '  All modules in the Puppetfile are up2date. '.green + GOOD_EMOJI)
+        puts Ra10ke.green("#{Ra10ke.good_emoji}  All modules in the Puppetfile are up2date. #{Ra10ke.good_emoji}")
       end
     end
   end

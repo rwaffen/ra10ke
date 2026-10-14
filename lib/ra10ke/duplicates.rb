@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'ra10ke/monkey_patches'
 require 'ra10ke/puppetfile_parser'
 
 module Ra10ke::Duplicates

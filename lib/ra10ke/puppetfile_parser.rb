@@ -1,6 +1,5 @@
 # it might be desirable to parse the Puppetfile as a string instead of evaling it.
 # this module allows you to do just that.
-require 'ra10ke/monkey_patches'
 
 module Ra10ke
   module PuppetfileParser
@@ -27,7 +26,7 @@ module Ra10ke
       @modules ||= begin
         return [] unless File.exist?(puppetfile)
 
-        all_lines = File.read(puppetfile).lines.map(&:strip_comment)
+        all_lines = File.read(puppetfile).lines.map { |line| strip_comment(line) }
         # remove comments from all the lines
         lines_without_comments = all_lines.reject { |line| line.match(/#.*\n/) || line.empty? }.join("\n")
         lines_without_comments.split(/^mod/).map do |line|
@@ -59,6 +58,13 @@ module Ra10ke
         args: process_args(args),
       }
     end
+
+    # Remove comments and trailing whitespace from a Puppetfile line.
+    def strip_comment(line)
+      index = line.index(/#|\n/)
+      index.nil? ? line.rstrip : line[0, index].rstrip
+    end
+    private :strip_comment
 
     # @return [Array] - returns an array of hashes with the args in key value pairs
     # @param [Array] - the arguments processed from each entry in the puppetfile
